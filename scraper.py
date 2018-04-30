@@ -22,6 +22,17 @@ def getPointsForSeason(player_id):
     
     return pointsList
 
+def calculateCumulativePoints(gwpoints_allplayers):
+    cumulative_points = []
+    for player in range(1, 4):
+        temp_list = []
+        runningSum = 0
+        for gw in range(0, CURRENT_GAMEWEEK):
+            runningSum += gwpoints_allplayers[player - 1][gw]
+            temp_list.append(runningSum)
+        cumulative_points.append(temp_list)
+    return cumulative_points
+
 def transposeData(gwpoints_allplayers):
     gw_points = []
     gw_points.append(PLAYER_NAMES)
@@ -46,6 +57,6 @@ print("Scraped all data")
 
 with open(filename, "w") as output:
     writer = csv.writer(output, lineterminator='\n')
-    writer.writerows(transposeData(gameweek_points_allplayers))
+    writer.writerows(transposeData(calculateCumulativePoints(gameweek_points_allplayers)))
 
 print("Printed to file")

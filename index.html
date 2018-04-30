@@ -23,12 +23,18 @@
   <body>
     <main role="main" class="container">
       <div class="starter-template">
-        <div id="graphdiv2" style="width:500px; height:300px;"></div>
+        <center>
+          <h1>Points through the season</h1>
+          <br>
+          <div id="graphdiv2" style="width:800px; height:500px;"></div>
+        </center>
         <script type="text/javascript">
           g2 = new Dygraph(
             document.getElementById("graphdiv2"),
             "data/gameweek_points.csv", // path to CSV file
-            {}          // options
+            {
+              ylabel: 'Points'
+            }          // options
           );
         </script>
       </div>
