@@ -7,7 +7,7 @@ POINTS_FILENAME = "gameweek_points.csv"
 CURRENT_GAMEWEEK = 36
 
 # Daniel, Jayden, James
-PLAYER_NAMES = ["Daniel", "Jayden", "James"]
+PLAYER_NAMES = ["Gameweek", "Daniel", "Jayden", "James"]
 PLAYER_IDS = [226252, 815677, 2229616]
 
 def getPointsForGameweek(player_id, gameweek):
@@ -27,8 +27,11 @@ def transposeData(gwpoints_allplayers):
     gw_points.append(PLAYER_NAMES)
     for gw in range(0, CURRENT_GAMEWEEK):
         temp_list = []
-        for player in range(0, 3):
-            temp_list.append(gwpoints_allplayers[player][gw])
+        for player in range(0, 4):
+            if (player == 0):
+                temp_list.append(gw + 1)
+            else:
+                temp_list.append(gwpoints_allplayers[player - 1][gw])
         gw_points.append(temp_list)
     return gw_points
 
@@ -40,7 +43,6 @@ for player_id in PLAYER_IDS:
     gameweek_points_allplayers.append(getPointsForSeason(player_id))
 
 print("Scraped all data")
-print(gameweek_points_allplayers)
 
 with open(filename, "w") as output:
     writer = csv.writer(output, lineterminator='\n')
