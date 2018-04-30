@@ -3,7 +3,7 @@ import json
 import csv
 
 FPL_URL = "https://fantasy.premierleague.com/drf/"
-POINTS_FILENAME = "gameweek_points.json"
+POINTS_FILENAME = "gameweek_points.csv"
 CURRENT_GAMEWEEK = 36
 
 # Daniel, Jayden, James
