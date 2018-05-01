@@ -16,44 +16,41 @@
     <link href="css/starter-template.css" rel="stylesheet">
 
     <!-- Google Charts -->
+    <script type="text/javascript" src="js/papaparse.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
-      function initialize() {
-        var opts = {sendMethod: 'auto'};
-        // Replace the data source URL on next line with your data source URL.
-        var query = new google.visualization.Query('https://danwong.nz/fantasypl/data/gameweek_points.csv', opts);
-
-        // Send the query with a callback function.
-        query.send(handleQueryResponse);
-      }
-
-      function handleQueryResponse(response) {
-        // Called when the query response is returned.
-        console.log(response);
-      }
-
       function drawChart() {
-        initialize();
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2004',  1000,      400],
-          ['2005',  1170,      460],
-          ['2006',  660,       1120],
-          ['2007',  1030,      540]
-        ]);
+        Papa.parse("https://danwong.nz/fantasypl/data/gameweek_points.csv", {
+          download: true,
+          complete: function(results) {
+            results.data.splice(-1,1);
+            var data = new google.visualization.DataTable();
+            data.addRows(results.data.length)
+            for (var i = 0; i < results.data.length; i++) {
+              if (i == 0) {
+                for (var j = 0; j < 4; j++) {
+                  data.addColumn('number', results.data[i][j]);
+                }
+              } else {
+                for (var j = 0; j < 4; j++) {
+                  data.setCell(i, j, results.data[i][j]);
+                }
+              }
+            }
 
-        var options = {
-          title: 'Company Performance',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
+            var options = {
+              title: 'Points Through the Season',
+              legend: { position: 'bottom' }
+            };
 
-        var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
+            var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
 
-        chart.draw(data, options);
+            chart.draw(data, options);
+          }
+        });
       }
     </script>
   </head>
@@ -62,7 +59,7 @@
     <main role="main" class="container">
       <div class="starter-template">
         <center>
-          <div id="graph-div"></div>
+          <div id="graph-div" style="width: 1000px; height: 500px"></div>
         </center>
       </div>
     </main><!-- /.container -->
