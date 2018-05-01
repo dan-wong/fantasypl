@@ -15,31 +15,55 @@
     <!-- Custom styles for this template -->
     <link href="css/starter-template.css" rel="stylesheet">
 
-    <!-- Dygraph -->
-    <link rel="stylesheet" href="css/dygraph.css" />
-    <script src="js/dygraph.min.js"></script>
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function initialize() {
+        var opts = {sendMethod: 'auto'};
+        // Replace the data source URL on next line with your data source URL.
+        var query = new google.visualization.Query('https://danwong.nz/fantasypl/data/gameweek_points.csv', opts);
+
+        // Send the query with a callback function.
+        query.send(handleQueryResponse);
+      }
+
+      function handleQueryResponse(response) {
+        // Called when the query response is returned.
+        console.log(response);
+      }
+
+      function drawChart() {
+        initialize();
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
+
+        chart.draw(data, options);
+      }
+    </script>
   </head>
 
   <body>
     <main role="main" class="container">
       <div class="starter-template">
         <center>
-          <div id="graphdiv2" style="width:800px; height:400px;"></div>
-          <br />
-          <div id="label-div"></div>
+          <div id="graph-div"></div>
         </center>
-        <script type="text/javascript">
-          g2 = new Dygraph(
-            document.getElementById("graphdiv2"),
-            "data/gameweek_points.csv", // path to CSV file
-            {
-              ylabel: 'Points',
-              xlabel: 'Gameweek',
-              title: 'Points Through the Season',
-              labelsDiv: 'label-div',
-            }
-          );
-        </script>
       </div>
     </main><!-- /.container -->
 
