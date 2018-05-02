@@ -38,6 +38,20 @@
         console.log(response);
       }
 
+      function initialize() {
+        var opts = {sendMethod: 'auto'};
+        // Replace the data source URL on next line with your data source URL.
+        var query = new google.visualization.Query('https://danwong.nz/fantasypl/data/gameweek_points.csv', opts);
+
+        // Send the query with a callback function.
+        query.send(handleQueryResponse);
+      }
+
+      function handleQueryResponse(response) {
+        // Called when the query response is returned.
+        console.log(response);
+      }
+
       function drawChart() {
         initialize();
         var data = google.visualization.arrayToDataTable([
