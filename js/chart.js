@@ -28,32 +28,39 @@ function drawChart() {
       }
     });
 
-    Papa.parse("https://danwong.nz/fantasypl/data/gameweek_points.csv", {
-      download: true,
-      complete: function(results) {
-        results.data.splice(-1,1);
-        var data = new google.visualization.DataTable();
-        data.addRows(results.data.length)
-        for (var i = 0; i < results.data.length; i++) {
-          if (i == 0) {
-            for (var j = 0; j < 4; j++) {
-              data.addColumn('number', results.data[i][j]);
-            }
-          } else {
-            for (var j = 0; j < 4; j++) {
-              data.setCell(i, j, results.data[i][j]);
-            }
-          }
-        }
+    // Papa.parse("https://danwong.nz/fantasypl/data/gameweek_points.csv", {
+    //   download: true,
+    //   complete: function(results) {
+    //     results.data.splice(-1,1);
+    //     // var data = new google.visualization.DataTable();
+    //     // data.addRows(results.data.length)
+    //     // for (var i = 0; i < results.data.length; i++) {
+    //     //   if (i == 0) {
+    //     //     for (var j = 0; j < 4; j++) {
+    //     //       data.addColumn('number', results.data[i][j]);
+    //     //     }
+    //     //   } else {
+    //     //     for (var j = 0; j < 4; j++) {
+    //     //       data.setCell(i, j, results.data[i][j]);
+    //     //     }
+    //     //   }
+    //     // }
+    //     var data = google.visualization.arrayToDataTable([
+    //       ["Element", "Density", { role: "style" } ],
+    //       ["Copper", 8.94, "#b87333"],
+    //       ["Silver", 10.49, "silver"],
+    //       ["Gold", 19.30, "gold"],
+    //       ["Platinum", 21.45, "color: #e5e4e2"]
+    //     ]);
 
-        var options = {
-          title: 'Points Through the Season',
-          legend: { position: 'bottom' }
-        };
+    //     var options = {
+    //       title: 'Points Through the Season',
+    //       legend: { position: 'bottom' }
+    //     };
 
-        var chart = new google.visualization.Histogram(document.getElementById('points-gameweek-div'));
+    //     var chart = new google.visualization.ColumnChart(document.getElementById('points-gameweek-div'));
 
-        chart.draw(data, options);
-      }
-    });
+    //     chart.draw(data, options);
+    //   }
+    // });
   }

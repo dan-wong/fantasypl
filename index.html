@@ -16,17 +16,55 @@
     <link href="css/starter-template.css" rel="stylesheet">
 
     <!-- Google Charts -->
-    <script type="text/javascript" src="js/papaparse.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/chart.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
+<<<<<<< HEAD
+=======
+
+      function initialize() {
+        var opts = {sendMethod: 'auto'};
+        // Replace the data source URL on next line with your data source URL.
+        var query = new google.visualization.Query('https://danwong.nz/fantasypl/data/gameweek_points.csv', opts);
+
+        // Send the query with a callback function.
+        query.send(handleQueryResponse);
+      }
+
+      function handleQueryResponse(response) {
+        // Called when the query response is returned.
+        console.log(response);
+      }
+
+      function drawChart() {
+        initialize();
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('graph-div'));
+
+        chart.draw(data, options);
+      }
+>>>>>>> parent of 706a6f3... Converted to google charts
     </script>
   </head>
 
   <body>
     <main role="main" class="container">
+<<<<<<< HEAD
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
@@ -36,6 +74,12 @@
             <div id="points-gameweek-div" style="width: 100%; height:500px"></div>
           </div>
         </div>
+=======
+      <div class="starter-template">
+        <center>
+          <div id="graph-div"></div>
+        </center>
+>>>>>>> parent of 706a6f3... Converted to google charts
       </div>
     </main><!-- /.container -->
 
