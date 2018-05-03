@@ -4,7 +4,6 @@ function drawChart() {
       complete: function(results) {
         var data = new google.visualization.DataTable();
         data.addRows(results.data.length)
-        console.log(results.data);
         for (var i = 0; i < results.data.length; i++) {
           if (i == 0) {
             for (var j = 0; j < 4; j++) {
