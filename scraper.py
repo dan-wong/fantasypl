@@ -16,10 +16,7 @@ def getDataForGameweek(player_id, gameweek):
     data = []
     data.append(jsonResponse["entry_history"]["points"])
     data.append(jsonResponse["entry_history"]["total_points"])
-
-    global pob_cumulative
-    pob_cumulative += jsonResponse["entry_history"]["points_on_bench"]
-    data.append(pob_cumulative)
+    data.append(jsonResponse["entry_history"]["points_on_bench"])
 
     return data
 
@@ -47,6 +44,19 @@ def getCumulativeGameweekPoints(data_object):
 
 def getBenchGameweekPoints(data_object):
     return getData(data_object, 2)
+
+def getCombinedGameweekAndBenchPoints(data_object):
+    gameweek_points = getGameweekPoints(data_object)
+    bench_points = getBenchGameweekPoints(data_object)
+
+    pointsList = []
+    for player_index in range(0,3):
+        temp = []
+        for i in range(0, CURRENT_GAMEWEEK):
+            temp.append(gameweek_points[player_index][i] + bench_points[player_index][i])
+        pointsList.append(temp)
+    
+    return pointsList
 
 def transposeData(gwpoints_allplayers):
     gw_points = []
@@ -87,5 +97,9 @@ with open("data/gameweek_cumulative_points.csv", "w") as output:
 with open("data/gameweek_bench_points.csv", "w") as output:
     writer = csv.writer(output, lineterminator='\n')
     writer.writerows(transposeData(getBenchGameweekPoints(data_object)))
+
+with open("data/gameweek_combined_points.csv", "w") as output:
+    writer = csv.writer(output, lineterminator='\n')
+    writer.writerows(transposeData(getCombinedGameweekAndBenchPoints(data_object)))
 
 print("Printed to file")
