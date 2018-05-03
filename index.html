@@ -26,16 +26,29 @@
   </head>
 
   <body>
-    <center><h1>Fantasy Football</h1></center>
+    <div class="title">
+        <h1>Fantasy Football</h1>
+    </div>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-6">
-            <div id="cumulative-graph-div" style="width: 100%; height: 500px"></div>
+      <center>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="cumulative-graph-div" class="card" style="width: 80%; height: 500px"></div>
+          </div>
         </div>
-        <div class="col-md-6">
-          <div id="points-gameweek-div" style="width: 100%; height:500px"></div>
+
+        <div class="row">
+          <div class="col-md-12">
+              <div id="points-gameweek-div" class="card" style="width: 80%; height:500px"></div>
+          </div>
         </div>
-      </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="bench-points-gameweek-div" class="card" style="width: 80%; height:500px"></div>
+            </div>
+          </div>
+      </center>
     </div>
 
     <!-- Bootstrap core JavaScript
