@@ -3,35 +3,60 @@ import json
 import csv
 
 FPL_URL = "https://fantasy.premierleague.com/drf/"
-POINTS_FILENAME = "gameweek_points.csv"
-CURRENT_GAMEWEEK = 36
+CURRENT_GAMEWEEK = 38
 
 # Daniel, Jayden, James
 PLAYER_NAMES = ["Gameweek", "Daniel", "Jayden", "James"]
 PLAYER_IDS = [226252, 815677, 2229616]
 
-def getPointsForGameweek(player_id, gameweek):
-    r = requests.get(FPL_URL + "/entry/" + str(player_id) + "/event/" + str(gameweek) + "/picks")
+def getDataForGameweek(player_id, gameweek):
+    r = requests.get(FPL_URL + "entry/" + str(player_id) + "/event/" + str(gameweek) + "/picks")
     jsonResponse = r.json()
-    return jsonResponse["entry_history"]["points"]
 
-def getPointsForSeason(player_id):
+    data = []
+    data.append(jsonResponse["entry_history"]["points"])
+    data.append(jsonResponse["entry_history"]["total_points"])
+    data.append(jsonResponse["entry_history"]["points_on_bench"])
+
+    return data
+
+def getDataObjectForSeason(player_id):
+    data_for_player = []
+    for i in range(1, CURRENT_GAMEWEEK):
+        data_for_player.append(getDataForGameweek(player_id, i))
+    return data_for_player
+
+def getData(data_object, index):
     pointsList = []
-    for i in range(1, CURRENT_GAMEWEEK + 1):
-        pointsList.append(getPointsForGameweek(player_id, i))
+    for player_index in range(0, 3):
+        temp = []
+        for i in range(0, CURRENT_GAMEWEEK):
+            temp.append(data_object[player_index][i][index])
+        pointsList.append(temp)
     
     return pointsList
 
-def calculateCumulativePoints(gwpoints_allplayers):
-    cumulative_points = []
-    for player in range(1, 4):
-        temp_list = []
-        runningSum = 0
-        for gw in range(0, CURRENT_GAMEWEEK):
-            runningSum += gwpoints_allplayers[player - 1][gw]
-            temp_list.append(runningSum)
-        cumulative_points.append(temp_list)
-    return cumulative_points
+def getGameweekPoints(data_object):
+    return getData(data_object, 0)
+
+def getCumulativeGameweekPoints(data_object):
+    return getData(data_object, 1)
+
+def getBenchGameweekPoints(data_object):
+    return getData(data_object, 2)
+
+def getCombinedGameweekAndBenchPoints(data_object):
+    gameweek_points = getGameweekPoints(data_object)
+    bench_points = getBenchGameweekPoints(data_object)
+
+    pointsList = []
+    for player_index in range(0,3):
+        temp = []
+        for i in range(0, CURRENT_GAMEWEEK):
+            temp.append(gameweek_points[player_index][i] + bench_points[player_index][i])
+        pointsList.append(temp)
+    
+    return pointsList
 
 def transposeData(gwpoints_allplayers):
     gw_points = []
@@ -47,16 +72,34 @@ def transposeData(gwpoints_allplayers):
     return gw_points
 
 # Main Script
-gameweek_points_allplayers = []
-filename = "data/" + POINTS_FILENAME
+data_object = []
+
+print("Scraping data")
 
 for player_id in PLAYER_IDS:
-    gameweek_points_allplayers.append(getPointsForSeason(player_id))
+    temp = []
+    for i in range(0, CURRENT_GAMEWEEK):
+        temp.append(getDataForGameweek(player_id, i+1))
+        pob_cumulative = 0
+    data_object.append(temp)
+    print("Finished: " + str(player_id))
 
 print("Scraped all data")
 
-with open(filename, "w") as output:
+with open("data/gameweek_points.csv", "w") as output:
     writer = csv.writer(output, lineterminator='\n')
-    writer.writerows(transposeData(calculateCumulativePoints(gameweek_points_allplayers)))
+    writer.writerows(transposeData(getGameweekPoints(data_object)))
+
+with open("data/gameweek_cumulative_points.csv", "w") as output:
+    writer = csv.writer(output, lineterminator='\n')
+    writer.writerows(transposeData(getCumulativeGameweekPoints(data_object)))
+
+with open("data/gameweek_bench_points.csv", "w") as output:
+    writer = csv.writer(output, lineterminator='\n')
+    writer.writerows(transposeData(getBenchGameweekPoints(data_object)))
+
+with open("data/gameweek_combined_points.csv", "w") as output:
+    writer = csv.writer(output, lineterminator='\n')
+    writer.writerows(transposeData(getCombinedGameweekAndBenchPoints(data_object)))
 
 print("Printed to file")
