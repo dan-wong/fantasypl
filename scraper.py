@@ -3,11 +3,11 @@ import json
 import csv
 
 FPL_URL = "https://fantasy.premierleague.com/drf/"
-CURRENT_GAMEWEEK = 38
+CURRENT_GAMEWEEK = 23
 
 # Daniel, Jayden, James
-PLAYER_NAMES = ["Gameweek", "Daniel", "Jayden", "James"]
-PLAYER_IDS = [226252, 815677, 2229616]
+PLAYER_NAMES = ["Gameweek", "Daniel", "Jayden", "James", "Crissie"]
+PLAYER_IDS = [2085875, 294233, 101090, 2843275]
 
 def getDataForGameweek(player_id, gameweek):
     r = requests.get(FPL_URL + "entry/" + str(player_id) + "/event/" + str(gameweek) + "/picks")
@@ -28,7 +28,7 @@ def getDataObjectForSeason(player_id):
 
 def getData(data_object, index):
     pointsList = []
-    for player_index in range(0, 3):
+    for player_index in range(0, PLAYER_IDS.len()):
         temp = []
         for i in range(0, CURRENT_GAMEWEEK):
             temp.append(data_object[player_index][i][index])
@@ -50,7 +50,7 @@ def getCombinedGameweekAndBenchPoints(data_object):
     bench_points = getBenchGameweekPoints(data_object)
 
     pointsList = []
-    for player_index in range(0,3):
+    for player_index in range(0, PLAYER_IDS.len()):
         temp = []
         for i in range(0, CURRENT_GAMEWEEK):
             temp.append(gameweek_points[player_index][i] + bench_points[player_index][i])
@@ -63,7 +63,7 @@ def transposeData(gwpoints_allplayers):
     gw_points.append(PLAYER_NAMES)
     for gw in range(0, CURRENT_GAMEWEEK):
         temp_list = []
-        for player in range(0, 4):
+        for player in range(0, PLAYER_IDS.len() + 1):
             if (player == 0):
                 temp_list.append(gw + 1)
             else:

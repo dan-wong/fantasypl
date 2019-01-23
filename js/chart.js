@@ -7,11 +7,11 @@ function drawChart() {
         data.addRows(results.data.length)
         for (var i = 0; i < results.data.length; i++) {
           if (i == 0) {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               data.addColumn('number', results.data[i][j]);
             }
           } else {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               data.setCell(i, j, results.data[i][j]);
             }
           }
@@ -36,11 +36,11 @@ function drawChart() {
         data.addRows(results.data.length)
         for (var i = 0; i < results.data.length; i++) {
           if (i == 0) {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               data.addColumn('number', results.data[i][j]);
             }
           } else {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               data.setCell(i, j, results.data[i][j]);
             }
           }
@@ -65,16 +65,16 @@ function drawChart() {
         data.addRows(results.data.length)
 
         var cumulative_sum = []
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 4; i++) {
           cumulative_sum[i] = 0;
         }
         for (var i = 0; i < results.data.length; i++) {
           if (i == 0) {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               data.addColumn('number', results.data[i][j]);
             }
           } else {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               if (j == 0) {
                 data.setCell(i, j, results.data[i][j]);
               } else {
@@ -104,16 +104,16 @@ function drawChart() {
         data.addRows(results.data.length)
 
         var cumulative_sum = []
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 4; i++) {
           cumulative_sum[i] = 0;
         }
         for (var i = 0; i < results.data.length; i++) {
           if (i == 0) {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               data.addColumn('number', results.data[i][j]);
             }
           } else {
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 5; j++) {
               if (j == 0) {
                 data.setCell(i, j, results.data[i][j]);
               } else {
